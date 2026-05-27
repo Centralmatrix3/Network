@@ -275,8 +275,8 @@ def process_repo(mode, repo=None):
     repo_dispatch[repository](source_path, repository)
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="Rule Builder")
-    parser.add_argument("repo", nargs="?", help="Target Repository")
+    parser = argparse.ArgumentParser(description="Rule Build")
+    parser.add_argument("repo", nargs="?", help="Repository Name")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--download", action="store_true")
     group.add_argument("--copy", action="store_true")

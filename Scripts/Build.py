@@ -212,12 +212,12 @@ def process_file(file_list, args):
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Rule Build")
     subparsers = parser.add_subparsers(dest="mode", required=True)
-    content = subparsers.add_parser("S") # S=Sources
+    content = subparsers.add_parser("S") # S = Sources
     content.add_argument("repo", nargs="?", help="Repository Name")
     sources = content.add_mutually_exclusive_group(required=True)
     sources.add_argument("--download", action="store_true")
     sources.add_argument("--copy", action="store_true")
-    convert = subparsers.add_parser("C") # C=Convert
+    convert = subparsers.add_parser("C") # C = Convert
     convert.add_argument("platform", choices=["Egern", "QuantumultX", "Singbox", "Stash", "Surge"])
     convert.add_argument("file_path", type=Path)
     convert.add_argument("--type", action=argparse.BooleanOptionalAction)
