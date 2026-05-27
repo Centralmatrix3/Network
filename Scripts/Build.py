@@ -25,7 +25,7 @@ RULE_TYPE_ORDER = [
 RULE_TYPE_EXTRA = {"USER-AGENT", "URL-REGEX", "PROTOCOL", "PROCESS-NAME"}
 RULE_TYPE_INDEX = {rule: index for index, rule in enumerate(RULE_TYPE_ORDER)}
 RULE_TYPE_KNOWN = frozenset(RULE_TYPE_ORDER) | RULE_TYPE_EXTRA
- 
+
 EGERN_RULE_MAP = {
     "DOMAIN": "domain_set",
     "DOMAIN-SUFFIX": "domain_suffix_set",
