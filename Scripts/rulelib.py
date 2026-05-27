@@ -5,7 +5,7 @@ import sys
 import argparse
 import urllib.request
 
-RULESET_BASE_URL = "https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Ruleset"
+RULESET_BASE_URL = "https://raw.githubusercontent.com/Centralmatrix3/Network/master/Ruleset"
 
 def process_rule(target_file, source_file):
     source_rule_content = []
