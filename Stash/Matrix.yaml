@@ -1,6 +1,6 @@
 # 配置名称: Stash 配置
 # 配置作者: Centralmatrix3
-# 更新时间: 26-04-05 00:00
+# 更新时间: 26-05-28 00:00
 
 # [订阅信息]
 subscribe-url: https://your-service-provider
@@ -34,7 +34,7 @@ dns:
 proxy-groups:
   - name: 自行选择
     type: select
-    icon: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/Static.png
+    icon: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/Static.png
     include-all: true
     filter: ^
     interval: 1800
@@ -42,7 +42,7 @@ proxy-groups:
 
   - name: 苹果服务
     type: select
-    icon: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/Apple-v2.png
+    icon: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/Apple-v2.png
     proxies:
       - DIRECT
       - 自行选择
@@ -56,7 +56,7 @@ proxy-groups:
 
   - name: 港台媒体
     type: select
-    icon: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/StreamingSE.png
+    icon: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/StreamingSE.png
     proxies:
       - DIRECT
       - 自行选择
@@ -70,7 +70,7 @@ proxy-groups:
 
   - name: 国内媒体
     type: select
-    icon: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/StreamingCN.png
+    icon: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/StreamingCN.png
     proxies:
       - DIRECT
       - 自行选择
@@ -84,7 +84,7 @@ proxy-groups:
 
   - name: 国外媒体
     type: select
-    icon: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/Streaming.png
+    icon: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/Streaming.png
     proxies:
       - 自行选择
       - 自动选择
@@ -98,7 +98,7 @@ proxy-groups:
 
   - name: 国外网站
     type: select
-    icon: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/Global.png
+    icon: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/Global.png
     proxies:
       - 自行选择
       - 自动选择
@@ -112,7 +112,7 @@ proxy-groups:
 
   - name: 黑白名单
     type: select
-    icon: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/Final.png
+    icon: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/Final.png
     proxies:
       - 自行选择
       - 自动选择
@@ -126,7 +126,7 @@ proxy-groups:
 
   - name: 自动选择
     type: url-test
-    icon: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/Available.png
+    icon: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/Available.png
     include-all: true
     filter: ^
     tolerance: 50
@@ -135,7 +135,7 @@ proxy-groups:
 
   - name: 香港节点
     type: url-test
-    icon: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/HK.png
+    icon: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/HK.png
     include-all: true
     filter: "香港|港|🇭🇰|HK|(?i)Hong"
     tolerance: 50
@@ -144,7 +144,7 @@ proxy-groups:
 
   - name: 台湾节点
     type: url-test
-    icon: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/TW.png
+    icon: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/TW.png
     include-all: true
     filter: "台湾|台|🇹🇼|TW|(?i)Taiwan"
     tolerance: 50
@@ -153,7 +153,7 @@ proxy-groups:
 
   - name: 日本节点
     type: url-test
-    icon: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/JP.png
+    icon: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/JP.png
     include-all: true
     filter: "日本|日|🇯🇵|JP|(?i)Japan"
     tolerance: 50
@@ -162,7 +162,7 @@ proxy-groups:
 
   - name: 韩国节点
     type: url-test
-    icon: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/KR.png
+    icon: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/KR.png
     include-all: true
     filter: "韩国|韩|🇰🇷|KR|(?i)Korea"
     tolerance: 50
@@ -171,7 +171,7 @@ proxy-groups:
 
   - name: 狮城节点
     type: url-test
-    icon: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/SG.png
+    icon: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/SG.png
     include-all: true
     filter: "新加坡|狮|🇸🇬|SG|(?i)Singapore"
     tolerance: 50
@@ -180,7 +180,7 @@ proxy-groups:
 
   - name: 美国节点
     type: url-test
-    icon: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/US.png
+    icon: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/US.png
     include-all: true
     filter: "美国|美|🇺🇸|US|(?i)States"
     tolerance: 50
@@ -202,49 +202,49 @@ rules:
 # [远程规则]
 rule-providers:
   广告拦截:
-    url: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Stash/Ruleset/Advertising.yaml
+    url: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Stash/Ruleset/Advertising.yaml
     behavior: domain
     interval: 86400
     format: yaml
 
   港台媒体:
-    url: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Stash/Ruleset/HMTMedia.yaml
+    url: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Stash/Ruleset/HMTMedia.yaml
     behavior: classical
     interval: 86400
     format: yaml
 
   国内媒体:
-    url: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Stash/Ruleset/ChinaMedia.yaml
+    url: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Stash/Ruleset/ChinaMedia.yaml
     behavior: classical
     interval: 86400
     format: yaml
 
   国外媒体:
-    url: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Stash/Ruleset/GlobalMedia.yaml
+    url: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Stash/Ruleset/GlobalMedia.yaml
     behavior: classical
     interval: 86400
     format: yaml
 
   国外网站:
-    url: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Stash/Ruleset/Global.yaml
+    url: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Stash/Ruleset/Global.yaml
     behavior: classical
     interval: 86400
     format: yaml
 
   苹果服务:
-    url: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Stash/Ruleset/Apple.yaml
+    url: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Stash/Ruleset/Apple.yaml
     behavior: classical
     interval: 86400
     format: yaml
 
   LAN规则:
-    url: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Stash/Ruleset/LAN.yaml
+    url: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Stash/Ruleset/LAN.yaml
     behavior: classical
     interval: 86400
     format: yaml
 
   国内网站: 
-    url: https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Stash/Ruleset/GEOIPCN.yaml
+    url: https://raw.githubusercontent.com/Centralmatrix3/Network/master/Stash/Ruleset/GEOIPCN.yaml
     behavior: classical
     interval: 86400
     format: yaml

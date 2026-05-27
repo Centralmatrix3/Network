@@ -4,7 +4,7 @@
  * @author = I-am-R-E
 ----------------------------------------
 [general]
-geo_location_checker = http://ip-api.com/json/?lang=zh-CN, https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Scripts/IP-API/IP-API.js
+geo_location_checker = http://ip-api.com/json/?lang=zh-CN, https://raw.githubusercontent.com/Centralmatrix3/Network/master/Scripts/IP-API/IP-API.js
 ----------------------------------------
 */
 

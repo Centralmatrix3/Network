@@ -1,5 +1,5 @@
 <div align="center">
-  <h2>NetTool Repository</h2>
+  <h2>Network Repository</h2>
 </div>
 
 <div align="center">
@@ -14,16 +14,16 @@
       <th><strong>工具</strong></th>
     </tr>
     <tr>
-      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/Clash.png" alt="Clash" align="center" height="75" width="75"></td>
-      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/Egern.png" alt="Egern" align="center" height="75" width="75"></td>
-      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/Loon.png" alt="Loon" align="center" height="75" width="75"></td>
-      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/QuantumultX.png" alt="QuantumultX" align="center" height="75" width="75"></td>
+      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/Clash.png" alt="Clash" align="center" height="75" width="75"></td>
+      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/Egern.png" alt="Egern" align="center" height="75" width="75"></td>
+      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/Loon.png" alt="Loon" align="center" height="75" width="75"></td>
+      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/QuantumultX.png" alt="QuantumultX" align="center" height="75" width="75"></td>
     </tr>
     <tr>
       <td align="center"><strong>配置</strong></td>
       <td align="center"><strong>配置</strong></td>
       <td align="center"><strong>配置</strong></td>
-      <td align="center"><a href="https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/QuantumultX/Matrix.conf"><strong>配置</strong></a></td>
+      <td align="center"><a href="https://raw.githubusercontent.com/Centralmatrix3/Network/master/QuantumultX/Matrix.conf"><strong>配置</strong></a></td>
     </tr>
     <tr>
       <th><strong>工具</strong></th>
@@ -32,16 +32,16 @@
       <th><strong>工具</strong></th>
     </tr>
     <tr>
-      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/Shadowrocket.png" alt="Shadowrocket" align="center" height="75" width="75"></td>
-      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/Sing-box.png" alt="Sing-box" align="center" height="75" width="75"></td>
-      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/Stash.png" alt="Stash" align="center" height="75" width="75"></td>
-      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Gallery/Color/Surge.png" alt="Surge" align="center" height="75" width="75"></td>
+      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/Shadowrocket.png" alt="Shadowrocket" align="center" height="75" width="75"></td>
+      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/Sing-box.png" alt="Sing-box" align="center" height="75" width="75"></td>
+      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/Stash.png" alt="Stash" align="center" height="75" width="75"></td>
+      <td align="center"><img src="https://raw.githubusercontent.com/Centralmatrix3/Network/master/Gallery/Color/Surge.png" alt="Surge" align="center" height="75" width="75"></td>
     </tr>
     <tr>
       <td align="center"><strong>配置</strong></td>
       <td align="center"><strong>配置</strong></td>
-      <td align="center"><a href="https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Stash/Matrix.yaml"><strong>配置</strong></a></td>
-      <td align="center"><a href="https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Surge/Matrix.conf"><strong>配置</strong></a></td>
+      <td align="center"><a href="https://raw.githubusercontent.com/Centralmatrix3/Network/master/Stash/Matrix.yaml"><strong>配置</strong></a></td>
+      <td align="center"><a href="https://raw.githubusercontent.com/Centralmatrix3/Network/master/Surge/Matrix.conf"><strong>配置</strong></a></td>
     </tr>
     <tr>
       <td align="center" colspan="4"><strong>Config Not Applicable to Everyone</strong></td>

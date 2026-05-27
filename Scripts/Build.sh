@@ -28,7 +28,7 @@ copy() {
     done
 }
 
-if [[ "$repository" == "NetTool" ]]; then
+if [[ "$repository" == "Network" ]]; then
     echo "Execute in $repository Repository"
     rule_dir=("Ruleset" "QuantumultX/Ruleset" "Stash/Ruleset" "Surge/Ruleset")
     for rule_path in "${rule_dir[@]}"; do
@@ -135,7 +135,7 @@ if [[ "$repository" == "NetTool" ]]; then
             output_file="$platform/Ruleset/$target_rule.${formats[$platform]}"
             source_link=(); source_file=()
             for file in ${rule_local_source[$target_rule]}; do
-                source_link+=("https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Ruleset/$file")
+                source_link+=("https://raw.githubusercontent.com/Centralmatrix3/Network/master/Ruleset/$file")
                 source_file+=("Ruleset/$file")
             done
           # download "$output_file" "${source_link[@]}"
@@ -285,8 +285,8 @@ elif [[ "$repository" == "Matrix-io" ]]; then
             output_file="$platform/Ruleset/$target_rule.${formats[$platform]}"
             source_link=(); source_file=()
             for file in ${rule_local_source[$target_rule]}; do
-                source_link+=("https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Ruleset/$file")
-                source_file+=("NetTool/Ruleset/$file")
+                source_link+=("https://raw.githubusercontent.com/Centralmatrix3/Network/master/Ruleset/$file")
+                source_file+=("Network/Ruleset/$file")
             done
           # download "$output_file" "${source_link[@]}"
             copy "$output_file" "${source_file[@]}"
@@ -296,7 +296,7 @@ elif [[ "$repository" == "Matrix-io" ]]; then
 
 else
     echo "Execute Repository: $repository"
-    echo "Please Execute in NetTool Repository."
+    echo "Please Execute in Network Repository."
     echo "Please Execute in Matrix-io Repository."
     exit 1
 fi

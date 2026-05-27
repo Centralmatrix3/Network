@@ -1,18 +1,443 @@
 /**
 ----------------------------------------------------------
 author = KOP-XIAO
-update = 26-04-23 00:00
+update = 26-05-28 00:00
 ----------------------------------------------------------
 [general]
-resource_parser_url = https://raw.githubusercontent.com/Centralmatrix3/NetTool/master/Scripts/Parser/Parser.js
+resource_parser_url = https://raw.githubusercontent.com/Centralmatrix3/Network/master/Scripts/Parser/Parser.js
 ----------------------------------------------------------
 */
 
+// ==== Parser Helper UI by Quantumult-X (918+) ====
+var $parser = $parser || {};
+
+// schema：作者声明的全部参数（不带 value）
+$parser.hashSchema = function () {
+  // helper 必须定义在函数体内部 ---- 协议要求三个函数自包含
+  function _emojiOptions() {
+    return [
+      { label: "添加",     value: "1"  },
+      { label: "国行设备", value: "2"  },
+      { label: "删除",     value: "-1" }
+    ];
+  }
+  function _ptnOptions() {
+    return [
+      { label: "原样",         value: ""  },
+      { label: "🅰 字母方块",   value: "1" },
+      { label: "🄰 字母方块（实）", value: "2" },
+      { label: "𝐀 加粗",        value: "3" },
+      { label: "𝗮 加粗小写",    value: "4" },
+      { label: "𝔸 双线",        value: "5" },
+      { label: "𝕒 双线小写",    value: "6" },
+      { label: "ᵃ 上标",        value: "7" },
+      { label: "ᴬ 大写上标",    value: "8" }
+    ];
+  }
+  function _nptOptions() {
+    return [
+      { label: "原样",         value: ""  },
+      { label: "①",            value: "1" },
+      { label: "❶",            value: "2" },
+      { label: "⓵",            value: "3" },
+      { label: "𝟙",            value: "4" },
+      { label: "¹",            value: "5" },
+      { label: "₁",            value: "6" },
+      { label: "𝟏",            value: "7" },
+      { label: "𝟷",            value: "8" }
+    ];
+  }
+
+  if ($resource.type == "server") { // server content
+    return {
+    version: 1,
+    sections: [
+      { type: "group",
+        title: "✈️ 订阅获取",
+        items: [
+          { type: "switch", key: "UA", label: "User-Agent 替换",
+            onValue: "1", offValue: "" ,
+            description: "开启该选项后，将会尝试使用 Shadowrocket 的 User-Agent 重新获取订阅内容"}
+          ]
+      },
+      {
+        type: "group",
+        title: "🎲 筛选&排序",
+        items: [
+          { type: "tags",   key: "in",     label: "保留（in）",
+            description: "按节点名关键字保留。每行一个关键字表示\"或\"；同行用 . 分隔表示\"与\"。例：另起一行填 香港、台湾 表示含其一即可；同一行填 香港.IPLC 表示同时含香港和 IPLC。",
+            placeholder: "如：香港 / 香港.IPLC" },
+          { type: "tags",   key: "out",    label: "删除（out）",
+            description: "按节点名关键字删除。每行一个关键字表示\"或\"；同行用 . 分隔表示\"与\"。",
+            placeholder: "如：BGP / BGP.试用" },
+          { type: "text",   key: "regex",  label: "正则保留（regex）",
+            description: "对节点完整信息正则匹配以保留节点", placeholder: "iplc" },
+          { type: "text",   key: "regout", label: "正则删除（regout）",
+            description: "对节点完整信息正则匹配以删除节点", placeholder: "" },
+          { type: "text",   key: "sort", label: "节点排序（sort）",
+            description: "对节点进行排序，参数是1(正序)/-1（逆序）/x（随机排序）/自定义规则（用>或者<连接）", placeholder: "🇭🇰>🇯🇵>🇺🇸" }
+        ]
+      },
+      {
+        type: "group",
+        title: "⛰️ 参数调整",
+        items: [
+          { type: "select", key: "emoji", label: "Emoji 旗帜（🇨🇳🇭🇰🇺🇸...）",
+            description: "添加/删除节点名地区旗帜", options: _emojiOptions() },
+          { type: "text",   key: "replace", label: "正则替换节点信息（replace）",
+            description: "替换节点信息（⚠️ 可匹配所有内容 ⚠️），regex1@str1+regex2@str2", placeholder: "" },
+          { type: "switch", key: "udp",   label: "UDP Relay",
+            onValue: "1", offValue: "-1" },
+          { type: "switch", key: "tfo",   label: "Fast Open",
+            onValue: "1", offValue: "-1" },
+          { type: "switch", key: "cert",  label: "TLS 证书验证",
+            description: "默认关闭", onValue: "1", offValue: "-1" },
+          { type: "switch", key: "uot",   label: "UDP over TCP（仅 SS/SSR）",
+            onValue: "1", offValue: "" },
+          { type: "switch", key: "aead",  label: "VMess AEAD",
+            description: "关闭 VMess AEAD", onValue: "", offValue: "-1" },
+          { type: "text",   key: "alpn",  label: "ALPN",
+            description: "over-tls 节点的 ALPN", placeholder: "h2" },
+          { type: "text",   key: "host",  label: "Host",
+            description: "修改已有 host；增加 host 请加 ☠️ 结尾",
+            placeholder: "" },
+          { type: "text",   key: "checkurl", label: "Check URL",
+            description: "server_check_url 参数",
+            placeholder: "http://...", keyboard: "url" }
+        ]
+      },
+      {
+        type: "group",
+        title: "🎯 重命名",
+        items: [
+          { type: "text", key: "rename",  label: "节点重命名（Rename）",
+            description: "格式：旧名@新名 / 前缀@ / @后缀；多组用 + 连接；删除字段用 ☠️ 结尾",
+            placeholder: "香港@HK+@[1X]" },
+          { type: "text", key: "rrname",  label: "节点重命名（emoji 保持在前）",
+            description: "在 emoji 之后再次重命名", placeholder: "" },
+          { type: "select", key: "ptn", label: "字母样式（ptn）",
+            description: "将节点名英文替换成花式样式 🅰/🄰/𝐀/𝗮/𝔸/𝕒/ᵃ/ᴬ ",
+            options: _ptnOptions() },
+          { type: "select", key: "npt", label: "数字样式（npt）",
+            description: "将节点名数字替换成花式样式 ①/❶/⓵/𝟙/¹/₁/𝟏/𝟷",
+            options: _nptOptions() }
+        ]
+      },
+      {
+        type: "group",
+        title: "🤖 其他参数",
+        items: [
+          { type: "select", key: "ntf",  label: "解析通知",
+            options: [
+              { label: "默认",          value: "" },
+              { label: "关闭",          value: "0"},
+              { label: "打开",          value: "1"}
+            ] },
+          { type: "switch", key: "info", label: "流量信息",
+            onValue: "1", offValue: "", description: "通知的形式推送"订阅用量"以及"到期时间"等信息"},
+          { type: "text",   key: "flow", label: "流量参数",
+            description: "格式：到期时间:总流量GB:已用GB（如 2026-12-31:1000:54）",
+            placeholder: "2026-12-31:1000:54" },
+          { type: "select", key: "type", label: "强制类型",
+            options: [
+              { label: "自动",         value: ""           },
+              { label: "Nodes",        value: "nodes"      },
+              { label: "Rule",         value: "rule"       },
+              { label: "Module",       value: "module"     },
+              { label: "List",         value: "list"       },
+              { label: "Domain Set",   value: "domain-set" }
+            ] }
+        ]
+      }
+    ]
+  };
+} else if ($resource.type == "filter") { // rule content
+  return {
+    version: 1,
+    sections: [
+      {
+        type: "group",
+        title: "🔀 Filter 「分流」",
+        description: "仅对 rewrite_remote / filter_remote 生效",
+        items: [
+          { type: "tags", key: "in",  label: "保留分流规则「in」",
+            description: "按关键字保留 filter。每行一个关键字（多行之间为\"或\"关系）。",
+            placeholder: "如：weibo" },
+          { type: "tags", key: "out",  label: "禁用分流/重写「out」",
+            description: "按关键字保留 filter。每行一个关键字（多行之间为\"或\"关系）。",
+            placeholder: "如：weibo" },
+          { type: "text", key: "policy", label: "单策略组指定「policy」",
+            description: "rule-set 生成策略组的名字（默认 Shawn）",
+            placeholder: "Shawn" },
+          { type: "text", key: "pset",   label: "多策略组指定「pset」",
+            description: "regex1@policy1+regex2@policy2" },
+          { type: "text", key: "regex",   label: "正则保留「regex」",
+            description: "正则匹配保留指定内容" },
+          { type: "text", key: "regout",   label: "正则删除「regout」",
+            description: "正则匹配删除指定内容" },
+          { type: "text", key: "replace",   label: "正则替换「replace」",
+            description: "regex@new_regex 正则替换指定内容" }
+        ]
+      },
+      {
+        type : "group",
+        title: "🔗 代理链相关设置「Relay」",
+        items : [
+          { type: "text", key: "via",    label: "via-interface「规则订阅」",
+             description: "0 : via-interface=%TUN%, 设置代理链时，规则分流需使用此参数，请在策略偏好将策略组指定为 落地策略组/节点\n" ,
+             placeholder: "填写 0 即可" 
+          },
+          { type: "text",   key: "relay", label: "代理链 Relay「节点订阅」",
+            description: "将（落地）节点的订阅转换为 ip/host 规则，指向 中转策略组/节点。\n ⚠️ 设置 代理链条Relay 时，请确保关闭改订阅首页的「策略偏好」设置 \n\n ⚠️ 以上两项不应该在同一条引用中同时设置 ⚠️" ,
+            placeholder: "⚠️ 此处请填写你的 中转策略组/节点名" },
+           
+        ]
+      },
+      {
+        type: "group",
+        title: "🤖 其他参数",
+        items: [
+          { type: "select", key: "ntf",  label: "解析通知",
+            options: [
+              { label: "默认",          value: "" },
+              { label: "关闭",          value: "0"},
+              { label: "打开",          value: "1"}
+            ] },
+          { type: "select", key: "type", label: "强制类型",
+            options: [
+              { label: "自动",         value: ""           },
+              { label: "Nodes",        value: "nodes"      },
+              { label: "Rule",         value: "rule"       },
+              { label: "Module",       value: "module"     },
+              { label: "List",         value: "list"       },
+              { label: "Domain Set",   value: "domain-set" }
+            ] },
+          { type: "switch", key: "cdn",  label: "GitHub CDN 加速",
+            onValue: "1", offValue: "" },
+          { type: "select", key: "dst", label: "转换目标「dst」",
+            options: [
+              { label: "默认（不转换）", value: ""        },
+              { label: "Rewrite",        value: "rewrite" },
+              { label: "Filter",         value: "filter"  }
+            ] },
+          { type: "select", key: "fcr",  label: "网络接口指定「fcr」",
+            options: [
+              { label: "默认",            value: ""  },
+              { label: "强制蜂窝数据",    value: "1" },
+              { label: "混合接口",        value: "2" },
+              { label: "负载均衡",        value: "3" }
+            ] , description:"强制指定 "强制蜂窝数据/混合接口/负载均衡 等"" }
+        ]
+      }
+    ]
+  };
+} else { // rewrite type 
+  return {
+    version: 1,
+    sections: [
+      {
+        type: "group",
+        title: "🫆 Rewrite 「重写」",
+        description: "仅对 rewrite_remote / filter_remote 生效",
+        items: [
+          { type: "tags", key: "in",  label: "保留分流/重写「in」",
+            description: "按关键字保留 rewrite/filter。每行一个关键字（多行之间为\"或\"关系）。",
+            placeholder: "如：weibo" },
+          { type: "tags", key: "out",  label: "禁用分流/重写「out」",
+            description: "按关键字保留 rewrite/filter。每行一个关键字（多行之间为\"或\"关系）。",
+            placeholder: "如：weibo" },
+          { type: "tags", key: "inhn",  label: "保留主机名「inhn」",
+            description: "按关键字保留相关主机名hostname。每行一个关键字（多行之间为\"或\"关系）。",
+            placeholder: "如：weibo" },
+          { type: "tags", key: "outhn", label: "删除主机名「outhn」",
+            description: "按关键字删除相关主机名hostname。每行一个关键字（多行之间为\"或\"关系）。",
+            placeholder: "如：tb_price" },
+          { type: "text", key: "regex",   label: "正则保留「regex」",
+            description: "正则匹配保留指定内容" },
+          { type: "text", key: "regout",   label: "正则删除「regout」",
+            description: "正则匹配删除指定内容" },
+          { type: "text", key: "replace",   label: "正则替换「replace」",
+            description: "regex@new_regex 正则替换指定内容" }
+        ]
+      },
+      {
+        type: "group",
+        title: "🤖 其他参数",
+        items: [
+          { type: "select", key: "ntf",  label: "解析通知",
+            options: [
+              { label: "默认",          value: "" },
+              { label: "关闭",          value: "0"},
+              { label: "打开",          value: "1"}
+            ] },
+          { type: "select", key: "type", label: "强制类型",
+            options: [
+              { label: "自动",         value: ""           },
+              { label: "Nodes",        value: "nodes"      },
+              { label: "Rule",         value: "rule"       },
+              { label: "Module",       value: "module"     },
+              { label: "List",         value: "list"       },
+              { label: "Domain Set",   value: "domain-set" }
+            ] },
+          { type: "switch", key: "cdn",  label: "GitHub CDN 加速",
+            onValue: "1", offValue: "" },
+          { type: "select", key: "dst", label: "转换目标「dst」",
+            options: [
+              { label: "默认（不转换）", value: ""        },
+              { label: "Rewrite",        value: "rewrite" },
+              { label: "Filter",         value: "filter"  }
+            ] }
+        ]
+      }
+    ]
+  };
+}
+};
+
+// hashToUI：支持动态参数
+$parser.hashToUI = function (hash) {
+  if (!hash) return { version: 1, sections: [] };
+
+  var schema = $parser.hashSchema();
+  var allItems = {};
+  schema.sections.forEach(function (g) {
+    g.items.forEach(function (it) { allItems[it.key] = it; });
+  });
+
+  var pairs = hash.split("&");
+  var values = {};
+  var dynamicItems = [];
+
+  pairs.forEach(function (p) {
+    if (!p) return;
+    var eq = p.indexOf("=");
+    var k = eq === -1 ? p : p.substring(0, eq);
+    var v = eq === -1 ? "" : p.substring(eq + 1);
+
+    if (allItems[k]) {
+      values[k] = v;
+    } else {
+      dynamicItems.push({
+        type: "text",
+        key: k,
+        label: k,
+        value: v
+      });
+    }
+  });
+
+  var sections = [];
+
+  schema.sections.forEach(function (g) {
+    var items = [];
+    g.items.forEach(function (it) {
+      if (!(it.key in values)) return;
+
+      var clone = JSON.parse(JSON.stringify(it));
+      var raw = values[it.key];
+
+      if (it.type === "switch") {
+        clone.value = (raw === it.onValue);
+      } else if (it.type === "tags") {
+        clone.value = raw.split("+").filter(Boolean);
+      } else {
+        clone.value = raw;
+      }
+
+      items.push(clone);
+    });
+
+    if (items.length) {
+      sections.push({
+        type: "group",
+        title: g.title,
+        items: items
+      });
+    }
+  });
+
+  if (dynamicItems.length) {
+    sections.push({
+      type: "group",
+      title: "自定义参数",
+      items: dynamicItems
+    });
+  }
+
+  return {
+    version: 1,
+    sections: sections
+  };
+};
+
+
+// uiToHash：支持动态字段回写
+$parser.uiToHash = function (values) {
+  var schema = $parser.hashSchema();
+  var allItems = {};
+  schema.sections.forEach(function (g) {
+    g.items.forEach(function (it) { allItems[it.key] = it; });
+  });
+
+  var parts = [];
+
+  Object.keys(values).forEach(function (k) {
+    var v = values[k];
+    var meta = allItems[k];
+    var serialized;
+
+    if (meta) {
+      if (meta.type === "switch") {
+        serialized = v ? meta.onValue : meta.offValue;
+      } else if (meta.type === "tags") {
+        serialized = (v || []).join("+");
+      } else {
+        serialized = String(v);
+      }
+    } else {
+      // 动态字段默认 text
+      serialized = String(v);
+    }
+
+    parts.push(k + "=" + serialized);
+  });
+
+  return parts.join("&");
+};
+
+// end ==== Parser Helper UI by Quantumult-X (918+) ====
+
+
+
 //beginning 解析器正常使用，調試註釋此部分
 
-let [link0, content0, subinfo] = [$resource.link, $resource.content, $resource.info]
+
+//
 let version = typeof $environment != "undefined" ? Number($environment.version.split("build")[1]): 0 // 版本号
+
+const UA_Retry= "Shadowrocket/3218 CFNetwork/3860.600.12 Darwin/25.5.0 iPhone18,1"
+const currentUA = $resource.user_agent;
+const inRetry = currentUA && currentUA.length > 0;
+
+var  UARetry = $resource.link.indexOf("#")!=-1 && $resource.link.indexOf("UA=1") != -1 ? 1 : 0;
+
+
+const result = {
+      // Normal parse result (kept for old-version compat;
+      // new versions ignore this when retry fires)
+      content: "",
+      // or error: "..."
+  };
+
+//$notify("retry2","🚦 UA-retry-After-outside",currentUA)
+//
+
+
+
+let [link0, content0, subinfo] = [$resource.link, $resource.content, $resource.info]
+
 let Perror = 0 //错误类型
+
 
 const ADDRes = `quantumult-x:///add-resource?remote-resource=url-encoded-json`
 var RLink0 = {
@@ -124,7 +549,7 @@ var Psession =  mark0 && para1.indexOf("tsession=") != -1 && version >= 771? par
 var Pmix = version>=844? 1 : 0 // allow rewrite and filter mix from version 844
 var Pjsonjq = version>=845? 0 : 1 // allow jsonjq from version 845
 var PNS=0 // 不支持的节点统计
-var NSList=["不支持的以下的节点 ↘️ \n"] // 不支持节点列表
+var NSList=["当前订阅内，不支持以下节点 ↘️ \n"] // 不支持节点列表
 
 var RegoutList= [] ;//用于 regout参数删选提醒
 // URL-Scheme 增加配置
@@ -181,6 +606,28 @@ if (Pflow!=0) {
   Finfo = BJson
 }
 
+//STATUS=🚀↑:0.62GB,↓:15.1GB,TOT:200GB💡Expires:2026-08-02
+//status=🚀↑:0.83gb,↓:17.73gb,tot:200gb💡expires:2026-08-02
+//2026-05-06 for shadowrocket sub with flow-info-fake server
+function Rocket_flow(RInfo) {
+  var Rinfo=RInfo.replace(/ /g, "").toLowerCase()
+  var BJson={}
+  try {
+    var Pdate = Rinfo.split("expires:")[1].split(",")[0].replace(/[^\x00-\x7F]/g, '').trim()// date-time
+    var Ptotal = Number(Rinfo.split("tot:")[1].split("gb")[0]) // flow
+    var Pupload = Number(Rinfo.split("↑:")[1].split("gb")[0]) // upload
+    var Pdown = Number(Rinfo.split("↓:")[1].split("gb")[0]) // download
+    var Bdate = Math.floor(Date.parse(Pdate)/1000)? Math.floor(Date.parse(Pdate)/1000): Math.floor(Date.parse("2046-10-10")/1000) 
+    var Btotal=Ptotal? Ptotal*1024*1024*1024 : 0
+    var Bused=Pupload? (Pupload+Pdown)*1024*1024*1024 : 0
+    var Bremain=Btotal !=0 ? Btotal-Bused : 1
+    BJson={bytes_used: Bused, bytes_remaining: Bremain, expire_date: Bdate}
+    Finfo = BJson
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 //花漾字 pattern
 var pat=[]
 pat[0] = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","k","r","s","t","u","v","w","x","y","z"]
@@ -229,6 +676,29 @@ var type0=""
 //flag=1,2,3分别为 server、rewrite、rule 类型
 var flag = 1
 
+// retry with new UA, default use shadowrocket
+if (UARetry && !inRetry && version>920) {
+  $notify("⚠️ 将尝试使用其他 UA, 重新获取订阅内容","⚠️ 如仍旧无有效内容，请自行与节点提供商联系","⚠️ 本次尝试使用 User-Agent 为 ⬇️\n\n"+UA_Retry)
+  $done({retry: {user_agent: "Shadowrocket/3218 CFNetwork/3860.600.12 Darwin/25.5.0 iPhone18,1"}})
+} else {
+  if (typeof($resource)!=="undefined" && PProfile == 0) {
+  Parser()
+  $done({ content: total, info: Finfo })
+} else if (PProfile != 0) {
+  try {
+    Profile_Handle()
+  } catch (err) {
+    if(Perror == 0) {
+      $notify("❌ 解析出现错误", "⚠️ 请点击通知，发送订阅链接进行反馈", err, bug_link);
+    }
+    }
+  openlink = {"open-url": ADDres}
+  $notify("⚠️请忽略报错提示, 点击此通知跳转", "添加配置中的有效远程资源👇 ["+ PProfile+"]", ADDres,openlink)
+  total = ProfileInfo[typeQ]
+  $done({content:total})
+}
+}
+
 function Parser() {
   type0 = Type_Check(content0); //  类型判断
   //$notify(type0)
@@ -261,22 +731,24 @@ function Parser() {
     $done({ content: total });
 }
 
-if (typeof($resource)!=="undefined" && PProfile == 0) {
-  Parser()
-  $done({ content: total, info: Finfo })
-} else if (PProfile != 0) {
-  try {
-    Profile_Handle()
-  } catch (err) {
-    if(Perror == 0) {
-      $notify("❌ 解析出现错误", "⚠️ 请点击通知，发送订阅链接进行反馈", err, bug_link);
-    }
-    }
-  openlink = {"open-url": ADDres}
-  $notify("⚠️请忽略报错提示, 点击此通知跳转", "添加配置中的有效远程资源👇 ["+ PProfile+"]", ADDres,openlink)
-  total = ProfileInfo[typeQ]
-  $done({content:total})
-}
+
+// 2026-05-15 remove
+// if (typeof($resource)!=="undefined" && PProfile == 0) {
+//   Parser()
+//   $done({ content: total, info: Finfo })
+// } else if (PProfile != 0) {
+//   try {
+//     Profile_Handle()
+//   } catch (err) {
+//     if(Perror == 0) {
+//       $notify("❌ 解析出现错误", "⚠️ 请点击通知，发送订阅链接进行反馈", err, bug_link);
+//     }
+//     }
+//   openlink = {"open-url": ADDres}
+//   $notify("⚠️请忽略报错提示, 点击此通知跳转", "添加配置中的有效远程资源👇 ["+ PProfile+"]", ADDres,openlink)
+//   total = ProfileInfo[typeQ]
+//   $done({content:total})
+// }
 
 
 /**
@@ -345,7 +817,7 @@ function ResourceParse() {
     total = total.length<100? total.filter( (ele,pos)=>total.indexOf(ele) == pos) : total
     total = total.join("\n")
   } else if (content0.trim() == "") {
-    $notify("‼️ 当前引用" + "⟦" + subtag + "⟧" + " 返回內容为空", "⁉️ 点通知跳转以确认链接是否失效", "如确认链接有效，请在链接后添加 ?flag=shadowrocket 或 &flag=shadowrocket ", nan_link);
+    $notify("‼️ 当前引用" + "⟦" + subtag + "⟧" + " 返回內容为空", "1️⃣ 请确认 APP 已经更新至最新版本 1.5.6", "2️⃣ 如确认链接有效，请打开资源解析器的「User-Agent 替换」选项重新获取链接内容 ", nan_link);
     flag = 0;
   } else if (type0 == "sub-http") {
     let url = VCheck(String(Base64.decode(content0.split("sub://")[1].split("#")[0])+", opt-parser=true, tag="+(new Date()).getTime()))
@@ -419,7 +891,7 @@ function ResourceParse() {
         if (version >913) {
           $notify("⚠️ 存在 Quantumult X 不支持的节点", "⚠️ 已忽略相关节点，共计 ➟ "+PNS+" 条", "⚠️ 此版本暂不支持 Hysteria2/Tuic 等类型, 以及 http-upgrade/xhttp/grpc/mkcp/h2" 等类型 vless\n\n"+NSList.join("\n"))
         } else {
-          $notify("⚠️ 存在 Quantumult X 不支持的节点", "⚠️ 已忽略相关节点，共计 ➟ "+PNS+" 条", "⚠️ 此版本暂不支持 Hysteria2/Anytls 等类型, 以及 http-upgrade/xhttp/grpc/mkcp/h2" 等类型 vless\n\n"+NSList.join("\n"))
+          $notify("⚠️ 存在 Quantumult X 不支持的节点", "⚠️ 已忽略相关节点，共计 ➟ "+PNS+" 条", "⚠️ 此版本暂不支持 Hysteria2/Tuic/Anytls 等类型, 以及 http-upgrade/xhttp/grpc/mkcp/h2" 等类型 vless\n\n"+NSList.join("\n"))
         }
       }
       if(Pflow==1) {
@@ -431,9 +903,9 @@ function ResourceParse() {
       if(Perror == 0) {
       if (PNS !=0) { // 全部为不支持类型节点
         if (version >913) {
-          $notify("⚠️ Quantumult-X 不支持该订阅内的节点", "⚠️ 已忽略共计 ➟ "+PNS+" 条不支持节点，剩余 0️⃣ 条", "⚠️ 此版本暂不支持 Hysteria2/Tuic 等类型, 以及 http-upgrade/xhttp/grpc/mkcp/h2" 等类型 vless\n\n"+NSList.join("\n"))
+          $notify("⚠️ Quantumult-X 不支持该订阅内的任何节点", "⚠️ 已忽略共计 ➟ "+PNS+" 条不支持节点，剩余 0️⃣ 条", "⚠️ 此版本暂不支持 Hysteria2/Tuic 等类型, 以及 http-upgrade/xhttp/grpc/mkcp/h2" 等类型 vless\n\n"+NSList.join("\n"))
         } else {
-          $notify("⚠️ Quantumult-X 不支持该订阅内的节点", "⚠️ 已忽略共计 ➟ "+PNS+" 条不支持节点，剩余 0️⃣ 条", "⚠️ 此版本暂不支持 Hysteria2/Anytls 等类型, 以及 http-upgrade/xhttp/grpc/mkcp/h2" 等类型 vless\n\n"+NSList.join("\n"))
+          $notify("⚠️ Quantumult-X 不支持该订阅内的任何节点", "⚠️ 已忽略共计 ➟ "+PNS+" 条不支持节点，剩余 0️⃣ 条", "⚠️ 此版本暂不支持 Hysteria2/Tuic/Anytls 等类型, 以及 http-upgrade/xhttp/grpc/mkcp/h2" 等类型 vless\n\n"+NSList.join("\n"))
         }
         
       } else { // 其它原因
@@ -1374,6 +1846,9 @@ function Rule_Policy(content) { //增加、替换 policy
         } else if (cnt.length == 4 && cnt[3].indexOf("no-resolve") != -1) {
             ply0 = Ppolicy != "Shawn" ? Ppolicy : cnt[2]
             nn = cnt[0] + ", " + cnt[1] + ", " + ply0 //+ ", " + cnt[3]
+        } else if (cnt.length > 4 && cnt[3].indexOf("extend")!=-1) { // 2026-04-28 
+            ply0 = Ppolicy != "Shawn" ? Ppolicy : cnt[2]
+            nn = cnt[0] + ", " + cnt[1] + ", " + ply0
         } else if (!RuleK.some(RuleCheck) && content) {
             //$notify("未能解析" + "⟦" + subtag + "⟧" + "其中部分规则:", content, nan_link);
             return ""
@@ -1505,11 +1980,12 @@ function ReplaceReg(cnt, para) {
 }
 
 
-// read parameters 2025-12-30
+// read parameters 2026-05-17
 function param(res,org,mbody) {
   if(mbody.indexOf(org)!=-1) {
-    tmp=mbody.split(org)[1].split("&")[0].split("#")[0]
-    return res+"="+tmp
+    tmp=mbody.split(org)[1].split("&")[0].split("#")[0].replace(/\s/,"")
+    tmp = tmp!=""? res+"="+tmp : ""
+    return tmp
   }
   else return ""
 }
@@ -1564,6 +2040,9 @@ function Subs2QX(subs, Pudp, Ptfo, Pcert0, PTls13) {
                 } else if (type == "ssocks" && list0[i].indexOf("remarks=") != -1) { //shadowrocket socks5-tls 类型
                     node = S5R2QX(list0[i],tlsp="over-tls")
                     node = tag0 != "" ? URI_TAG(node, tag0) : node
+                } else if (type == "socks" && list0[i].indexOf("remarks=") == -1) { // socks URI 2026-05-25
+                    node = Socks2QX(list0[i])
+                    node = tag0 != "" ? URI_TAG(node, tag0) : node
                 } else if (type == "ssr") {
                     node = SSR2QX(list0[i], Pudp, Ptfo)
                     node = tag0 != "" ? URI_TAG(node, tag0) : node
@@ -1606,6 +2085,9 @@ function Subs2QX(subs, Pudp, Ptfo, Pcert0, PTls13) {
                 } else if (type=="hysteria2" || (type=="anytls" && version<914) || type=="tuic") { //
                   PNS=PNS+1 
                   NSList.push(numToEmoji10(PNS)+list0[i])
+                } else if (/^STATUS\=/.test(listi)) { // flow info fake server
+                  //$notify("Status","flow",listi)
+                  Rocket_flow(listi)
                 }
               if (Pdbg) {$notify(i, type, node)}
             } catch (e) {
@@ -1671,14 +2153,14 @@ function QX_TLS(cnt,Pcert0,PTls13) {
   if(cnt.indexOf("tls-verification") != -1){ // 已有tls参数时, 如用户不指定，则不做处理
     cnt = (Pcert0 == -1 || Pcert0 == 1) ? cnt.replace(RegExp("tls\-verification.*?\,", "gmi"), cert0): cnt
     //cnt = Pcert0 == 1? cnt.replace(RegExp("tls\-verification.*?\,", "gmi"), cert0): cnt
-  }else if(cnt.indexOf("obfs=over-tls")!=-1 || /over\-tls\s*\=\s*true/.test(cnt) || cnt.indexOf("obfs=wss")!=-1){ //未包含tls参数时
-    cnt = cnt.replace(new RegExp("tag.*?\=", "gmi"), cert0+"tag=")
+  } else if(cnt.indexOf("obfs=over-tls")!=-1 || /over\-tls\s*\=\s*true/.test(cnt) || cnt.indexOf("obfs=wss")!=-1){ //未包含tls参数时
+    cnt = cnt.replace(new RegExp("tag\s*\=", "gmi"), cert0+"tag=")
   }
   if (tls13 !="") {
   if(cnt.indexOf("tls13") != -1){
     cnt = cnt.replace(RegExp("tls13.*?\,", "gmi"), tls13)
-  }else if(cnt.indexOf("obfs=over-tls")!=-1 || /over\-tls\s*\=\s*true/.test(cnt) || cnt.indexOf("obfs=wss")!=-1){
-    cnt = cnt.replace(new RegExp("tag.*?\=", "gmi"), tls13+"tag=")
+  } else if(cnt.indexOf("obfs=over-tls")!=-1 || /over\-tls\s*\=\s*true/.test(cnt) || cnt.indexOf("obfs=wss")!=-1){
+    cnt = cnt.replace(new RegExp("tag\s*\=", "gmi"), tls13+"tag=")
   }
   }
   if (!/^(shadowsocks|trojan|vmess|vless|anytls)/.test(cnt.trim())) { //关闭非 ss/ssr/trojan/vmess/vless 类型的 udp
@@ -1686,9 +2168,9 @@ function QX_TLS(cnt,Pcert0,PTls13) {
     if(cnt.indexOf("udp-relay") != -1){
       var cnt = cnt.replace(RegExp("udp\-relay.*?\,", "gmi"), udp)
     }else{
-      var cnt = cnt.replace(new RegExp("tag.*?\=", "gmi"), udp+"tag=")
+      var cnt = cnt.replace(new RegExp("tag\s*\=", "gmi"), udp+"tag=")
     }
-  }   
+  }
   return cnt
 }
 
@@ -1834,7 +2316,7 @@ function VR2QX(subs, Pudp, Ptfo, Pcert0, PTls13) {
 //Shadowrocket 格式的 socks URI 转换
 function S5R2QX(cnt,tlsp="false") {
   var listh = Base64.decode(cnt.split("socks://")[1].split("#")[0].split("?")[0])
-  server=listh+"#"+cnt.split("?")[1]
+  server=cnt.indexOf("#")!=-1? listh+"#"+cnt.split("?")[1] : listh+"?"+cnt.split("?")[1]
   var nss = []
   if (server != "") {
       var ipport = "socks5=" + server.split("@")[1].split("#")[0].split("/")[0];
@@ -1851,7 +2333,26 @@ function S5R2QX(cnt,tlsp="false") {
   return QX
 }
  
-
+// socks URI  转换 2026-05-25, 无remarks命名部分
+function Socks2QX(cnt,tlsp="false") {
+  var listh = Base64.decode(cnt.split("socks://")[1].split("#")[0].split("?")[0])
+  server=cnt.indexOf("#")!=-1? listh+"#"+cnt.split("?")[1] : listh+"?"+cnt.split("?")[1]
+  var nss = []
+  if (server != "") {
+      var ipport = "socks5=" + server.split("@")[1].split("#")[0].split("/")[0];
+      var uname = "username=" + server.split(":")[0];
+      var pwd = "password=" + server.split("@")[0].split(":")[1];
+      name = server.indexOf("#") != -1? server.split("#")[1] : ipport.split("=")[1].split(":")[0]
+      var tag = "tag=" + decodeURIComponent(name.split("&")[0]);
+      var tls = tlsp=="false"? "":"over-tls=true"
+      var cert = Pcert0 != 0 ? "tls-verification=true" : "tls-verification=false";
+      cert = tls == ""? "":cert
+      var tfo = Ptfo0 == 1 ? "fast-open=true" : "fast-open=false";
+      nss.push(ipport, uname, pwd, tls, cert, tfo, tag)
+  }
+  var QX = nss.filter(Boolean).join(",");
+  return QX
+}
 
 //V2RayN uri 转换成 QUANX 格式
 function V2QX(subs, Pudp, Ptfo, Pcert0, PTls13) {
@@ -2153,8 +2654,9 @@ function VL2QX(subs, Pudp, Ptfo, Pcert0, PTls13) {
     } else if(cnt.indexOf("type=")!=-1 && cnt.indexOf("type=tcp")==-1) {//暂不支持类型
     type="NS"
   }
-    thost=cnt.indexOf("&host=") == -1? thost : "obfs-host=" + decodeURIComponent(cnt.split("&host=")[1].split("&")[0].split("#")[0])
-    thost=cnt.indexOf("sni=") == -1? thost : "obfs-host=" + decodeURIComponent(cnt.split("sni=")[1].split("&")[0].split("#")[0]).replace(/\"|(Host\":)|\{|\}/g,"")
+    thost1=cnt.indexOf("&host=") == -1? thost : "obfs-host=" + decodeURIComponent(cnt.split("&host=")[1].split("&")[0].split("#")[0])
+    thost2=cnt.indexOf("sni=") == -1? thost : "obfs-host=" + decodeURIComponent(cnt.split("sni=")[1].split("&")[0].split("#")[0]).replace(/\"|(Host\":)|\{|\}/g,"")
+    thost = thost1.length >= thost2.length ? thost1 : thost2;
     puri = cnt.indexOf("&path=") == -1? puri : "obfs-uri=" + decodeURIComponent(cnt.split("&path=")[1].split("&")[0].split("#")[0])
   } 
 if(obfs=="obfs=wss" && obfs=="obfs=over-tls"){
@@ -2237,8 +2739,8 @@ function SS2QX(subs, Pudp, Ptfo) {
     //console.log(cntt)
     if (cntt.indexOf("@") != -1 && cntt.indexOf(":") != -1) { 
       ip = cnt.split("@")[1].split("#")[0].split("/")[0].split("?")[0];
-      if(cntt.indexOf("%")==-1 || cntt.split("@")[0].indexOf(":")==-1){ // 2025-05-16 
-        pwdmtd = Base64.decode(cnt.split("@")[0].replace(/-/g, "+").replace(/_/g, "/").replace(/%3D/g,"")).split("\u0000")[0].split(":")
+      if(cntt.indexOf("%")==-1 || cntt.split("@")[0].indexOf(":")==-1){ // 2026-05-18 :(%3D)|(\=)
+        pwdmtd = Base64.decode(cnt.split("@")[0].replace(/-/g, "+").replace(/_/g, "/").replace(/(%3D)|(\=)/g,"")).split("\u0000")[0].split(":")
       } else {
         pwdmtd = decodeURIComponent(cnt.split("@")[0]).split(":")
       }
