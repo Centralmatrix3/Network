@@ -13,7 +13,7 @@ var $parser = $parser || {};
 
 // schema：作者声明的全部参数（不带 value）
 $parser.hashSchema = function () {
-  // helper 必须定义在函数体内部 ---- 协议要求三个函数自包含
+  // helper 必须定义在函数体内部 —— 协议要求三个函数自包含
   function _emojiOptions() {
     return [
       { label: "添加",     value: "1"  },
@@ -134,7 +134,7 @@ $parser.hashSchema = function () {
               { label: "打开",          value: "1"}
             ] },
           { type: "switch", key: "info", label: "流量信息",
-            onValue: "1", offValue: "", description: "通知的形式推送"订阅用量"以及"到期时间"等信息"},
+            onValue: "1", offValue: "", description: "通知的形式推送“订阅用量”以及“到期时间”等信息"},
           { type: "text",   key: "flow", label: "流量参数",
             description: "格式：到期时间:总流量GB:已用GB（如 2026-12-31:1000:54）",
             placeholder: "2026-12-31:1000:54" },
@@ -226,7 +226,7 @@ $parser.hashSchema = function () {
               { label: "强制蜂窝数据",    value: "1" },
               { label: "混合接口",        value: "2" },
               { label: "负载均衡",        value: "3" }
-            ] , description:"强制指定 "强制蜂窝数据/混合接口/负载均衡 等"" }
+            ] , description:"强制指定 “强制蜂窝数据/混合接口/负载均衡 等”" }
         ]
       }
     ]
@@ -889,9 +889,9 @@ function ResourceParse() {
       total = PRelay==""? Base64.encode(total) : ServerRelay(total.split("\n"),PRelay) //强制节点类型 base64 加密后再导入 Quantumult X, 如果是relay，则转换成分流类型
       if (PNS !=0) {
         if (version >913) {
-          $notify("⚠️ 存在 Quantumult X 不支持的节点", "⚠️ 已忽略相关节点，共计 ➟ "+PNS+" 条", "⚠️ 此版本暂不支持 Hysteria2/Tuic 等类型, 以及 http-upgrade/xhttp/grpc/mkcp/h2" 等类型 vless\n\n"+NSList.join("\n"))
+          $notify("⚠️ 存在 Quantumult X 不支持的节点", "⚠️ 已忽略相关节点，共计 ➟ "+PNS+" 条", "⚠️ 此版本暂不支持 Hysteria2/Tuic 等类型, 以及 http-upgrade/xhttp/grpc/mkcp/h2” 等类型 vless\n\n"+NSList.join("\n"))
         } else {
-          $notify("⚠️ 存在 Quantumult X 不支持的节点", "⚠️ 已忽略相关节点，共计 ➟ "+PNS+" 条", "⚠️ 此版本暂不支持 Hysteria2/Tuic/Anytls 等类型, 以及 http-upgrade/xhttp/grpc/mkcp/h2" 等类型 vless\n\n"+NSList.join("\n"))
+          $notify("⚠️ 存在 Quantumult X 不支持的节点", "⚠️ 已忽略相关节点，共计 ➟ "+PNS+" 条", "⚠️ 此版本暂不支持 Hysteria2/Tuic/Anytls 等类型, 以及 http-upgrade/xhttp/grpc/mkcp/h2” 等类型 vless\n\n"+NSList.join("\n"))
         }
       }
       if(Pflow==1) {
@@ -903,9 +903,9 @@ function ResourceParse() {
       if(Perror == 0) {
       if (PNS !=0) { // 全部为不支持类型节点
         if (version >913) {
-          $notify("⚠️ Quantumult-X 不支持该订阅内的任何节点", "⚠️ 已忽略共计 ➟ "+PNS+" 条不支持节点，剩余 0️⃣ 条", "⚠️ 此版本暂不支持 Hysteria2/Tuic 等类型, 以及 http-upgrade/xhttp/grpc/mkcp/h2" 等类型 vless\n\n"+NSList.join("\n"))
+          $notify("⚠️ Quantumult-X 不支持该订阅内的任何节点", "⚠️ 已忽略共计 ➟ "+PNS+" 条不支持节点，剩余 0️⃣ 条", "⚠️ 此版本暂不支持 Hysteria2/Tuic 等类型, 以及 http-upgrade/xhttp/grpc/mkcp/h2” 等类型 vless\n\n"+NSList.join("\n"))
         } else {
-          $notify("⚠️ Quantumult-X 不支持该订阅内的任何节点", "⚠️ 已忽略共计 ➟ "+PNS+" 条不支持节点，剩余 0️⃣ 条", "⚠️ 此版本暂不支持 Hysteria2/Tuic/Anytls 等类型, 以及 http-upgrade/xhttp/grpc/mkcp/h2" 等类型 vless\n\n"+NSList.join("\n"))
+          $notify("⚠️ Quantumult-X 不支持该订阅内的任何节点", "⚠️ 已忽略共计 ➟ "+PNS+" 条不支持节点，剩余 0️⃣ 条", "⚠️ 此版本暂不支持 Hysteria2/Tuic/Anytls 等类型, 以及 http-upgrade/xhttp/grpc/mkcp/h2” 等类型 vless\n\n"+NSList.join("\n"))
         }
         
       } else { // 其它原因
@@ -1088,7 +1088,7 @@ function Type_Check(subs) {
     return type
 }
 
-// 检查节点名字(重复以及空名)等QuanX 不允许的情形，以及多个空格等"不规范"方式
+// 检查节点名字(重复以及空名)等QuanX 不允许的情形，以及多个空格等“不规范”方式
 function TagCheck_QX(content) {
   typefix = {"shadowsocks":["𝐬𝐬","𝐒𝐒","🅢🅢","🆂🆂","ⓢⓢ","🅂🅂","SS"],"shadowsocksr":["𝐬𝐬𝐫","𝐒𝐒𝐑","🅢🅢🅡","🆂🆂🆁","ⓢⓢⓡ","🅂🅂🅁","SSR"],
     "vmess":["𝐯𝐦𝐞𝐬𝐬","𝐕𝐌𝐄𝐒𝐒","🅥🅜🅔🅢🅢","🆅🅼🅴🆂🆂","ⓥⓜⓔⓢⓢ","🅅🄼🄴🅂🅂","VMESS"],"trojan":["𝐭𝐫𝐨𝐣𝐚𝐧","𝐓𝐑𝐎𝐉𝐀𝐍","🅣🅡🅞🅙🅐🅝","🆃🆁🅾🅹🅰🅽","ⓣⓡⓞⓙⓐⓝ","🅃🅁🄾🄹🄰🄽","TROJAN"],
@@ -1142,7 +1142,7 @@ function TagCheck_QX(content) {
     }
     if (nulllist.length >= 1) {
         no = nulllist.length <= 10 ? emojino[nulllist.length] : nulllist.length;
-        $notify("⚠️ 引用" + "⟦" + subtag + "⟧" + " 内有" + no + "个空节点名 ", "✅ 已将节点"类型+IP"设为节点名", " ⨁ " + nulllist.join("\n ⨁ "), nan_link)
+        $notify("⚠️ 引用" + "⟦" + subtag + "⟧" + " 内有" + no + "个空节点名 ", "✅ 已将节点“类型+IP”设为节点名", " ⨁ " + nulllist.join("\n ⨁ "), nan_link)
     }
     if (duplist.length >= 1) {
         no = duplist.length <= 10 ? emojino[duplist.length] : duplist.length;
@@ -3668,12 +3668,12 @@ function superMagicParse(str) {
   s = s.replace(/(:\s*(?:".*?"|[^,}\]]+?))\s*]/g, '$1}]');
   $notify(1,2,s)
   // 2. 补全 Key 的引号
-  // 逻辑：匹配 { 或 , 开头，后面跟着"非冒号的任意字符"，直到冒号为止
+  // 逻辑：匹配 { 或 , 开头，后面跟着“非冒号的任意字符”，直到冒号为止
   // 允许 key 中包含字母、数字、下划线、横杠 - 等
   s = s.replace(/([{\s,])([a-zA-Z0-9_\-]+)\s*:/g, '$1"$2":');
   
   // 3. 补全 Value 的引号 (核心修改部分)
-  // 逻辑：匹配 冒号，后面捕获"非引号、非逗号、非括号"的一串字符
+  // 逻辑：匹配 冒号，后面捕获“非引号、非逗号、非括号”的一串字符
   s = s.replace(/:\s*([^",}\]]+?)\s*(?=[,}\]])/g, (match, rawValue) => {
     const val = rawValue.trim();
     
