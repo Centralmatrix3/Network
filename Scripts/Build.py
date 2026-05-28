@@ -227,9 +227,9 @@ def process_file(file_list, args):
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Rule Build")
     subparsers = parser.add_subparsers(dest="mode", required=True)
-    content = subparsers.add_parser("R") # R = Ruleset
-    content.add_argument("repo", nargs="?", help="Repository Name")
-    sources = content.add_mutually_exclusive_group(required=True)
+    ruleset = subparsers.add_parser("R") # R = Ruleset
+    ruleset.add_argument("repo", nargs="?", help="Repository Name")
+    sources = ruleset.add_mutually_exclusive_group(required=True)
     sources.add_argument("--download", action="store_true")
     sources.add_argument("--copy", action="store_true")
     convert = subparsers.add_parser("C") # C = Convert
