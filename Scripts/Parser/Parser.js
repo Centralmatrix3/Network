@@ -1,7 +1,7 @@
 /**
 ----------------------------------------------------------
 author = KOP-XIAO
-update = 26-05-28 00:00
+update = 26-05-28 00:30
 ----------------------------------------------------------
 [general]
 resource_parser_url = https://raw.githubusercontent.com/Centralmatrix3/Network/master/Scripts/Parser/Parser.js
