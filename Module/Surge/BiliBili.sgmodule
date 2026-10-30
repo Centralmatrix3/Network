@@ -40,7 +40,7 @@ http-response-jq ^https:\/\/api\.live\.bilibili\.com\/xlive\/open-interface\/v2\
 ^https:\/\/line3-h5-mobile-api\.biligame\.com\/game\/live\/large_card_material\? data-type=text data="{"code":0,"message":"success"}" header="content-type: application/json"
 
 [Script]
-{{{空降助手}}} = type=http-request,pattern=^https:\/\/(?:grpc\.biliapi\.net|app\.bilibili\.com)\/bilibili\.community\.service\.dm\.v1\.DM\/DmSegMobile$,script-path=https://raw.githubusercontent.com/kokoryh/Sparkle/master/dist/bilibili.protobuf.request.js,requires-body=1,binary-body-mode=1,timeout=30,argument="{"logLevel":"{{{日志等级}}}"}"
+{{{空降助手}}} = type=http-request,pattern=^https:\/\/(?:grpc\.biliapi\.net|app\.bilibili\.com)\/bilibili\.(?:community\.service\.dm\.v1\.DM\/DmSegMobile|app\.playerunite\.v1\.Player\/PlayViewUnite)$,script-path=https://raw.githubusercontent.com/kokoryh/Sparkle/master/dist/bilibili.protobuf.request.js,requires-body=1,binary-body-mode=1,timeout=30,argument="{"logLevel":"{{{日志等级}}}"}"
 
 {{{优化评论区加载}}} = type=http-request,pattern=^https:\/\/(?:grpc\.biliapi\.net|app\.bilibili\.com)\/bilibili\.(?:app\.viewunite\.v1\.View\/View|main\.community\.reply\.v1\.Reply\/MainList)$,script-path=https://raw.githubusercontent.com/kokoryh/Sparkle/master/dist/bilibili.protobuf.request.js,requires-body=1,binary-body-mode=1,timeout=30,argument="{"purifyComment":{{{置顶评论广告}}},"logLevel":"{{{日志等级}}}"}"
 
