@@ -1,5 +1,5 @@
 # 规则名称: AI
-# 规则统计: 102
+# 规则统计: 104
 
 DOMAIN,ai.google.dev
 DOMAIN,aistudio.google.com
@@ -26,6 +26,7 @@ DOMAIN,cp4.cloudflare.com
 DOMAIN,gateway.ai.cloudflare.com
 DOMAIN,gemini.google.com
 DOMAIN,generativelanguage.googleapis.com
+DOMAIN,graph.facebook.com
 DOMAIN,gspe1-ssl.ls.apple.com
 DOMAIN,guzzoni.apple.com
 DOMAIN,imagine.meta.com
@@ -103,3 +104,4 @@ DOMAIN-KEYWORD,notebooklm.google
 DOMAIN-KEYWORD,openai
 DOMAIN-KEYWORD,openaiapi
 DOMAIN-KEYWORD,openaicom
+DOMAIN-WILDCARD,scontent-*.xx.fbcdn.net
