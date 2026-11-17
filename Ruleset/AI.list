@@ -1,5 +1,5 @@
 # 规则名称: AI
-# 规则统计: 104
+# 规则统计: 105
 
 DOMAIN,ai.google.dev
 DOMAIN,aistudio.google.com
@@ -83,6 +83,7 @@ DOMAIN-SUFFIX,livekit.cloud
 DOMAIN-SUFFIX,makersuite.google.com
 DOMAIN-SUFFIX,meta.ai
 DOMAIN-SUFFIX,mistral.ai
+DOMAIN-SUFFIX,muse.ai
 DOMAIN-SUFFIX,notebooklm.google
 DOMAIN-SUFFIX,notebooklm.google.com
 DOMAIN-SUFFIX,oaistatic.com
