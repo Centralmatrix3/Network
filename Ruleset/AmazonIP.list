@@ -1,5 +1,5 @@
 # 规则名称: AmazonIP
-# 规则统计: 1754
+# 规则统计: 1757
 
 IP-CIDR,1.178.1.0/24,no-resolve
 IP-CIDR,1.178.100.0/22,no-resolve
@@ -425,6 +425,9 @@ IP-CIDR,15.248.176.0/20,no-resolve
 IP-CIDR,15.248.193.0/31,no-resolve
 IP-CIDR,15.248.194.0/23,no-resolve
 IP-CIDR,15.248.198.0/24,no-resolve
+IP-CIDR,15.248.200.0/26,no-resolve
+IP-CIDR,15.248.208.0/25,no-resolve
+IP-CIDR,15.248.208.128/26,no-resolve
 IP-CIDR,15.248.32.0/21,no-resolve
 IP-CIDR,15.248.40.0/22,no-resolve
 IP-CIDR,15.248.48.0/20,no-resolve
